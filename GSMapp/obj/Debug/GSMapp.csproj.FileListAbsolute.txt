@@ -1,0 +1,7 @@
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\GSMapp.exe.config
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\GSMapp.exe
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\GSMapp.pdb
+C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.csprojResolveAssemblyReference.cache
+C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.csproj.CoreCompileInputs.cache
+C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.exe
+C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.pdb
