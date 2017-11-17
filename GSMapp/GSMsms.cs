@@ -107,6 +107,7 @@ namespace GSMapp
                         gsmPort.Encoding = Encoding.GetEncoding("windows-1251");
 
                         gsmPort.Open();
+                        gsmPort.DataReceived += SerialPortDataReceived;
                         IsConnected = true;
                     }
                     catch (Exception e)
@@ -124,6 +125,14 @@ namespace GSMapp
 
 
             return IsConnected;
+        }
+
+        private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            SerialPort sp = (SerialPort)sender;
+            string indata = sp.ReadExisting();
+            Console.WriteLine("Data Received:");
+            Console.Write(indata);
         }
 
         public void Disconnect()
@@ -192,6 +201,48 @@ namespace GSMapp
             string responce = gsmPort.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n") && responce.Contains("+CMGS"))
+            {
+                Console.WriteLine(responce);
+            }
+            else
+            {
+                Console.WriteLine("!!Error text: " + responce);
+            }
+        }
+
+        public void Number()
+        {
+            Console.WriteLine("Number->");
+
+            gsmPort.WriteLine("AT^USSDMODE=0");
+            Thread.Sleep(500);
+            gsmPort.WriteLine("AT+CUSD=1,\"*201#\",15");
+            Thread.Sleep(500);
+
+            string responce = gsmPort.ReadExisting();
+
+            if (responce.EndsWith("\r\nOK\r\n") && responce.Contains("+CMGS"))
+            {
+                Console.WriteLine(responce);
+            }
+            else
+            {
+                Console.WriteLine("!!Error text: " + responce);
+            }
+        }
+
+        public void Unlock()
+        {
+            Console.WriteLine("Unlock->");
+
+            gsmPort.WriteLine("AT^U2DIAG=0");
+            Thread.Sleep(500);
+            gsmPort.WriteLine("AT^CARDLOCK?");
+            Thread.Sleep(500);
+
+            string responce = gsmPort.ReadExisting();
+
+            if (responce.EndsWith("\r\nOK\r\n"))
             {
                 Console.WriteLine(responce);
             }
