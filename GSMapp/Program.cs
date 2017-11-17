@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GSMapp
@@ -12,11 +13,17 @@ namespace GSMapp
         {
             GSMsms sms = new GSMsms();
 
-            foreach (GSMcom c in sms.List())
+            sms.Connect();
+            Console.WriteLine(sms.IsConnected);
+
+            if (sms.IsConnected)
             {
-                Console.WriteLine(c.Description + " "+ c.Name);
+                sms.ReadFirst();
+                
             }
+
             Console.ReadLine();
+
         }
     }
 }
