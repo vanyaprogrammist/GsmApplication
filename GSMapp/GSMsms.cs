@@ -87,23 +87,16 @@ namespace GSMapp
                     try
                     {
                         gsmPort.PortName = com.Name;
-                        Console.WriteLine("comName"+com.Name);
                         gsmPort.BaudRate = 9600; // еще варианты 4800, 9600, 28800 или 56000
                         gsmPort.DataBits = 8; // еще варианты 8, 9
-                        gsmPort.StopBits =
-                            StopBits.One; // еще варианты StopBits.Two StopBits.None или StopBits.OnePointFive         
-                        gsmPort.Parity =
-                            Parity.Odd; // еще варианты Parity.Even Parity.Mark Parity.None или Parity.Space
+                        gsmPort.StopBits = StopBits.One; // еще варианты StopBits.Two StopBits.None или StopBits.OnePointFive         
+                        gsmPort.Parity = Parity.Odd; // еще варианты Parity.Even Parity.Mark Parity.None или Parity.Space
                         gsmPort.ReadTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
                         gsmPort.WriteTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
                         gsmPort.NewLine = Environment.NewLine;
                         gsmPort.Handshake = Handshake.RequestToSend;
                         gsmPort.DtrEnable = true;
                         gsmPort.RtsEnable = true;
-                        //port.Handshake = Handshake.RequestToSend;
-                        //port.DtrEnable = true;
-                        //port.RtsEnable = true;
-                        //port.NewLine = Environment.NewLine;
                         gsmPort.Encoding = Encoding.GetEncoding("windows-1251");
 
                         gsmPort.Open();
@@ -122,8 +115,6 @@ namespace GSMapp
                 }
 
             }
-
-
             return IsConnected;
         }
 
@@ -250,6 +241,16 @@ namespace GSMapp
             {
                 Console.WriteLine("!!Error text: " + responce);
             }
+        }
+
+        public void Operator()
+        {
+            Console.WriteLine("Operator->");
+
+            gsmPort.WriteLine("AT+COPS?");
+            Thread.Sleep(500);
+
+            
         }
     }
 }

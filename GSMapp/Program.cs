@@ -18,7 +18,7 @@ namespace GSMapp
 
             if (sms.IsConnected)
             {
-                sms.Number();
+                sms.Operator();
             }
 
             Console.ReadLine();
