@@ -11,11 +11,15 @@ namespace GSMapp
     {
         static void Main(string[] args)
         {
+            
             GsmConnect sms = new GsmConnect();
+            GeneralCommands gc = new GeneralCommands();
+            
 
+            
             sms.Connect();
             Console.WriteLine(sms.IsConnected);
-
+            
             if (sms.IsConnected)
             {
                 sms.Operator();

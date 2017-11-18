@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -16,13 +17,13 @@ namespace GSMapp
         private readonly SerialPort _port = null;
         private bool IsDeviceFound { get; set; } = false;
         public bool IsConnected { get; set; } = false;
-        private GeneralCommands GC { get; set; }
 
+        private List<SerialDataReceivedEventHandler> Receivers { get; set; }
 
         public GsmConnect()
         {
             _port = new SerialPort();
-            GC = new GeneralCommands();
+            Receivers = new List<SerialDataReceivedEventHandler>();
         }
 
         //Return list of GSM modems (connectection)
@@ -101,7 +102,7 @@ namespace GSMapp
                         _port.Encoding = Encoding.GetEncoding("windows-1251");
 
                         _port.Open();
-                        _port.DataReceived += SerialPortDataReceived;
+                        
                         
                         IsConnected = true;
                     }
@@ -120,24 +121,6 @@ namespace GSMapp
             return IsConnected;
         }
 
-        private void SerialPortDataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            SerialPort sp = (SerialPort)sender;
-            string indata = sp.ReadExisting();
-            string a = GC.Operator(indata);
-            if (a!=null)
-            {
-                Console.WriteLine("OPERATOR->");
-                Console.WriteLine(a);
-                Console.WriteLine("End OPERATOR<-");
-            }
-           
-            
-            Console.WriteLine("Data Received->");
-            Console.Write(indata);
-            Console.WriteLine("End of data received<-");
-        }
-
         public void Disconnect()
         {
             if (_port != null || IsConnected || _port.IsOpen)
@@ -145,6 +128,39 @@ namespace GSMapp
                 _port.Close();
                 _port.Dispose();
                 IsConnected = false;
+            }
+        }
+
+        public void AddReceiver(SerialDataReceivedEventHandler receiver)
+        {
+            if (Receivers.Any(r => r == receiver))
+            {
+                throw new Exception("Событие уже добавленно");
+            }
+            _port.DataReceived += receiver;
+            Receivers.Add(receiver);
+        }
+
+        public void RemoveReceiver(SerialDataReceivedEventHandler receiver)
+        {
+            if (Receivers.Any(r => r == receiver))
+            {
+                _port.DataReceived -= receiver;
+                Receivers.Remove(receiver);
+            }
+            else
+            {
+                throw new Exception("Нет подписки на событие");
+            }
+            
+        }
+
+        public void Write(string command)
+        {
+            if (IsConnected)
+            {
+                _port.WriteLine(command);
+                Thread.Sleep(500);
             }
         }
 
@@ -263,6 +279,14 @@ namespace GSMapp
             Thread.Sleep(500);
 
             
+        }
+
+        public void Imsi()
+        {
+            Console.WriteLine("IMSI->");
+
+            _port.WriteLine("AT+CIMI");
+            Thread.Sleep(500);
         }
     }
 }
