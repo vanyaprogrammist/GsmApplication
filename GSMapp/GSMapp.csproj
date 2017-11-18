@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneralCommands.cs" />
     <Compile Include="GsmCom.cs" />
     <Compile Include="GsmConnect.cs" />
     <Compile Include="Program.cs" />

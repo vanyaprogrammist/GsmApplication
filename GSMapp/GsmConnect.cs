@@ -16,12 +16,13 @@ namespace GSMapp
         private readonly SerialPort _port = null;
         private bool IsDeviceFound { get; set; } = false;
         public bool IsConnected { get; set; } = false;
-
+        private GeneralCommands GC { get; set; }
 
 
         public GsmConnect()
         {
             _port = new SerialPort();
+            GC = new GeneralCommands();
         }
 
         //Return list of GSM modems (connectection)
@@ -123,8 +124,18 @@ namespace GSMapp
         {
             SerialPort sp = (SerialPort)sender;
             string indata = sp.ReadExisting();
-            Console.WriteLine("Data Received:");
+            string a = GC.Operator(indata);
+            if (a!=null)
+            {
+                Console.WriteLine("OPERATOR->");
+                Console.WriteLine(a);
+                Console.WriteLine("End OPERATOR<-");
+            }
+           
+            
+            Console.WriteLine("Data Received->");
             Console.Write(indata);
+            Console.WriteLine("End of data received<-");
         }
 
         public void Disconnect()
