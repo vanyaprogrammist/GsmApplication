@@ -11,20 +11,23 @@ using System.Threading.Tasks;
 
 namespace GSMapp
 {
-    public class GSMsms
+    public class GsmConnect
     {
-        private SerialPort gsmPort = null;
+        private readonly SerialPort _port = null;
         private bool IsDeviceFound { get; set; } = false;
         public bool IsConnected { get; set; } = false;
 
-        public GSMsms()
+
+
+        public GsmConnect()
         {
-            gsmPort = new SerialPort();
+            _port = new SerialPort();
         }
 
-        public GSMcom[] List()
+        //Return list of GSM modems (connectection)
+        public GsmCom[] List()
         {
-            List<GSMcom> gsmCom = new List<GSMcom>();
+            List<GsmCom> gsmCom = new List<GsmCom>();
             ConnectionOptions options = new ConnectionOptions();
             options.Impersonation = ImpersonationLevel.Impersonate;
             options.EnablePrivileges = true;
@@ -43,7 +46,7 @@ namespace GSMapp
 
                 if (portName != "")
                 {
-                    GSMcom com = new GSMcom();
+                    GsmCom com = new GsmCom();
                     com.Name = portName;
                     com.Description = portDescription;
                     gsmCom.Add(com);
@@ -53,12 +56,10 @@ namespace GSMapp
             return gsmCom.ToArray();
         }
 
-        public GSMcom Search()
+        public GsmCom Search()
         {
-            
-
             IEnumerator enumerator = List().GetEnumerator();
-            GSMcom com = enumerator.MoveNext() ? (GSMcom)enumerator.Current : null;
+            GsmCom com = enumerator.MoveNext() ? (GsmCom)enumerator.Current : null;
 
             if (com == null)
             {
@@ -69,7 +70,6 @@ namespace GSMapp
             {
                 IsDeviceFound = true;
                 Console.WriteLine(com.ToString());
-                //Connect();
             }
 
             return com;
@@ -77,30 +77,31 @@ namespace GSMapp
 
         public bool Connect()
         {
-            if (gsmPort == null || !IsConnected || !gsmPort.IsOpen)
+            if (_port == null || !IsConnected || !_port.IsOpen)
             {
                 IsConnected = false;
 
-                GSMcom com = Search();
+                GsmCom com = Search();
                 if (com != null)
                 {
                     try
                     {
-                        gsmPort.PortName = com.Name;
-                        gsmPort.BaudRate = 9600; // еще варианты 4800, 9600, 28800 или 56000
-                        gsmPort.DataBits = 8; // еще варианты 8, 9
-                        gsmPort.StopBits = StopBits.One; // еще варианты StopBits.Two StopBits.None или StopBits.OnePointFive         
-                        gsmPort.Parity = Parity.Odd; // еще варианты Parity.Even Parity.Mark Parity.None или Parity.Space
-                        gsmPort.ReadTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
-                        gsmPort.WriteTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
-                        gsmPort.NewLine = Environment.NewLine;
-                        gsmPort.Handshake = Handshake.RequestToSend;
-                        gsmPort.DtrEnable = true;
-                        gsmPort.RtsEnable = true;
-                        gsmPort.Encoding = Encoding.GetEncoding("windows-1251");
+                        _port.PortName = com.Name;
+                        _port.BaudRate = 9600; // еще варианты 4800, 9600, 28800 или 56000
+                        _port.DataBits = 8; // еще варианты 8, 9
+                        _port.StopBits = StopBits.One; // еще варианты StopBits.Two StopBits.None или StopBits.OnePointFive         
+                        _port.Parity = Parity.Odd; // еще варианты Parity.Even Parity.Mark Parity.None или Parity.Space
+                        _port.ReadTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
+                        _port.WriteTimeout = 500; // еще варианты 1000, 2500 или 5000 (больше уже не стоит)
+                        _port.NewLine = Environment.NewLine;
+                        _port.Handshake = Handshake.RequestToSend;
+                        _port.DtrEnable = true;
+                        _port.RtsEnable = true;
+                        _port.Encoding = Encoding.GetEncoding("windows-1251");
 
-                        gsmPort.Open();
-                        gsmPort.DataReceived += SerialPortDataReceived;
+                        _port.Open();
+                        _port.DataReceived += SerialPortDataReceived;
+                        
                         IsConnected = true;
                     }
                     catch (Exception e)
@@ -128,10 +129,10 @@ namespace GSMapp
 
         public void Disconnect()
         {
-            if (gsmPort != null || IsConnected || gsmPort.IsOpen)
+            if (_port != null || IsConnected || _port.IsOpen)
             {
-                gsmPort.Close();
-                gsmPort.Dispose();
+                _port.Close();
+                _port.Dispose();
                 IsConnected = false;
             }
         }
@@ -140,14 +141,14 @@ namespace GSMapp
         {
             Console.WriteLine("Reading first...");
 
-            gsmPort.WriteLine("AT+CMGF=1"); //Set mode to Text(1) or PDU(0)
+            _port.WriteLine("AT+CMGF=1"); //Set mode to Text(1) or PDU(0)
             Thread.Sleep(500); //Give a second or write
-            gsmPort.WriteLine("AT+CPMS=\"SM\""); //Set storage to SIM(SM)
+            _port.WriteLine("AT+CPMS=\"SM\""); //Set storage to SIM(SM)
             Thread.Sleep(500);
-            gsmPort.WriteLine("AT+CMGL=\"ALL\""); //What category to read ALL, REC READ, or REC UNREAD
+            _port.WriteLine("AT+CMGL=\"ALL\""); //What category to read ALL, REC READ, or REC UNREAD
             Thread.Sleep(500);
 
-            string responce = gsmPort.ReadExisting();
+            string responce = _port.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n"))
             {
@@ -163,10 +164,10 @@ namespace GSMapp
         {
             Console.WriteLine("Reading...");
 
-            gsmPort.WriteLine("AT+CMGL=\"ALL\""); //What category to read ALL, REC READ, or REC UNREAD
+            _port.WriteLine("AT+CMGL=\"ALL\""); //What category to read ALL, REC READ, or REC UNREAD
             Thread.Sleep(500);
 
-            string responce = gsmPort.ReadExisting();
+            string responce = _port.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n"))
             {
@@ -182,14 +183,14 @@ namespace GSMapp
         {
             Console.WriteLine("Sending...");
 
-            gsmPort.WriteLine("AT+CMGF=1");
+            _port.WriteLine("AT+CMGF=1");
             Thread.Sleep(500);
-            gsmPort.WriteLine($"AT+CMGS=\"{toAdress}\"");
+            _port.WriteLine($"AT+CMGS=\"{toAdress}\"");
             Thread.Sleep(500);
-            gsmPort.WriteLine(message + char.ConvertFromUtf32(26));
+            _port.WriteLine(message + char.ConvertFromUtf32(26));
             Thread.Sleep(500);
 
-            string responce = gsmPort.ReadExisting();
+            string responce = _port.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n") && responce.Contains("+CMGS"))
             {
@@ -205,12 +206,12 @@ namespace GSMapp
         {
             Console.WriteLine("Number->");
 
-            gsmPort.WriteLine("AT^USSDMODE=0");
+            _port.WriteLine("AT^USSDMODE=0");
             Thread.Sleep(500);
-            gsmPort.WriteLine("AT+CUSD=1,\"*201#\",15");
+            _port.WriteLine("AT+CUSD=1,\"*110*10#\",15");
             Thread.Sleep(500);
 
-            string responce = gsmPort.ReadExisting();
+            string responce = _port.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n") && responce.Contains("+CMGS"))
             {
@@ -226,12 +227,12 @@ namespace GSMapp
         {
             Console.WriteLine("Unlock->");
 
-            gsmPort.WriteLine("AT^U2DIAG=0");
+            _port.WriteLine("AT^U2DIAG=0");
             Thread.Sleep(500);
-            gsmPort.WriteLine("AT^CARDLOCK?");
+            _port.WriteLine("AT^CARDLOCK?");
             Thread.Sleep(500);
 
-            string responce = gsmPort.ReadExisting();
+            string responce = _port.ReadExisting();
 
             if (responce.EndsWith("\r\nOK\r\n"))
             {
@@ -247,7 +248,7 @@ namespace GSMapp
         {
             Console.WriteLine("Operator->");
 
-            gsmPort.WriteLine("AT+COPS?");
+            _port.WriteLine("AT+COPS?");
             Thread.Sleep(500);
 
             

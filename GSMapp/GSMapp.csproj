@@ -43,8 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GSMcom.cs" />
-    <Compile Include="GSMsms.cs" />
+    <Compile Include="GsmCom.cs" />
+    <Compile Include="GsmConnect.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -11,7 +11,7 @@ namespace GSMapp
     {
         static void Main(string[] args)
         {
-            GSMsms sms = new GSMsms();
+            GsmConnect sms = new GsmConnect();
 
             sms.Connect();
             Console.WriteLine(sms.IsConnected);
