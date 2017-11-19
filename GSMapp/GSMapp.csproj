@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Abstract\ICommand.cs" />
+    <Compile Include="Commands\Concrete\OperatorCommand.cs" />
+    <Compile Include="Commands\InitializeSimManager.cs" />
     <Compile Include="Connectors\ComConnect.cs" />
     <Compile Include="Entities\SimCard.cs" />
     <Compile Include="GeneralCommands.cs" />

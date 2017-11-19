@@ -4,12 +4,15 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GSMapp.Entities;
 
 namespace GSMapp
 {
     public class GeneralCommands
     {
         public string OperatorName { get; set; } = null;
+
+        public SerialDataReceivedEventHandler Receiver;
 
         public GeneralCommands()
         {
@@ -45,6 +48,26 @@ namespace GSMapp
             
         }
 
+        public void ReceiverTest()
+        {
+            if (true)
+            {
+                Receiver = (sender, args) =>
+                {
+                    Console.WriteLine("GeneralCommands");
+                    SerialPort sp = (SerialPort)sender;
+                    string indata = sp.ReadExisting();
+
+                    string op = Operator(indata);
+
+                    Console.WriteLine("Data Received->");
+                    Console.Write(indata);
+                    Console.WriteLine("End of data received<-");
+                };
+            }
+           
+        }
+
         public void GeneralHandler(object sender, SerialDataReceivedEventArgs e)
         {
             Console.WriteLine("GeneralCommands");
@@ -60,12 +83,5 @@ namespace GSMapp
         }
     }
 
-    public enum OperatorList : int
-    {
-        Megafon = 02,
-        Mts = 01,
-        Tele2 = 20,
-        Beeline = 99,
-        Yota
-    }
+   
 }

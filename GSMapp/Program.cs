@@ -15,7 +15,7 @@ namespace GSMapp
             
             PortConnect sms = new PortConnect();
             GeneralCommands gc = new GeneralCommands();
-            sms.AddReceiver(gc.GeneralHandler);
+            sms.AddReceiver(gc.Receiver);
 
             
             sms.Connect();
