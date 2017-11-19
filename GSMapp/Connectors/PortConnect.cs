@@ -9,72 +9,25 @@ using System.Net.Configuration;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GSMapp.Entities;
 
-namespace GSMapp
+namespace GSMapp.Connectors
 {
-    public class GsmConnect
+    public class PortConnect
     {
         private readonly SerialPort _port = null;
-        private bool IsDeviceFound { get; set; } = false;
+        private ComConnect ComConnect { get; set; }
+
         public bool IsConnected { get; set; } = false;
+        
 
         private List<SerialDataReceivedEventHandler> Receivers { get; set; }
 
-        public GsmConnect()
+        public PortConnect()
         {
             _port = new SerialPort();
             Receivers = new List<SerialDataReceivedEventHandler>();
-        }
-
-        //Return list of GSM modems (connectection)
-        public GsmCom[] List()
-        {
-            List<GsmCom> gsmCom = new List<GsmCom>();
-            ConnectionOptions options = new ConnectionOptions();
-            options.Impersonation = ImpersonationLevel.Impersonate;
-            options.EnablePrivileges = true;
-            string connectString = $@"\\{Environment.MachineName}\root\cimv2";
-            ManagementScope scope = new ManagementScope(connectString,options);
-            scope.Connect();
-
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_POTSModem");
-            ManagementObjectSearcher search = new ManagementObjectSearcher(scope,query);
-            ManagementObjectCollection collection = search.Get();
-
-            foreach (ManagementObject obj in collection)
-            {
-                string portName = obj["AttachedTo"].ToString();
-                string portDescription = obj["Description"].ToString();
-
-                if (portName != "")
-                {
-                    GsmCom com = new GsmCom();
-                    com.Name = portName;
-                    com.Description = portDescription;
-                    gsmCom.Add(com);
-                }
-            }
-
-            return gsmCom.ToArray();
-        }
-
-        public GsmCom Search()
-        {
-            IEnumerator enumerator = List().GetEnumerator();
-            GsmCom com = enumerator.MoveNext() ? (GsmCom)enumerator.Current : null;
-
-            if (com == null)
-            {
-                IsDeviceFound = false;
-                Console.WriteLine("No GSM device found!");
-            }
-            else
-            {
-                IsDeviceFound = true;
-                Console.WriteLine(com.ToString());
-            }
-
-            return com;
+            ComConnect = new ComConnect();
         }
 
         public bool Connect()
@@ -83,7 +36,7 @@ namespace GSMapp
             {
                 IsConnected = false;
 
-                GsmCom com = Search();
+                Com com = ComConnect.Search();
                 if (com != null)
                 {
                     try
@@ -164,6 +117,7 @@ namespace GSMapp
             }
         }
 
+        //В класс команд
         public void ReadFirst()
         {
             Console.WriteLine("Reading first...");

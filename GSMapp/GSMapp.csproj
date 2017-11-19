@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connectors\ComConnect.cs" />
     <Compile Include="Entities\SimCard.cs" />
     <Compile Include="GeneralCommands.cs" />
-    <Compile Include="GsmCom.cs" />
-    <Compile Include="GsmConnect.cs" />
+    <Compile Include="Entities\Com.cs" />
+    <Compile Include="Connectors\PortConnect.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

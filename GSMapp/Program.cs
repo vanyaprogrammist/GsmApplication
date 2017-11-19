@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using GSMapp.Connectors;
 
 namespace GSMapp
 {
@@ -12,9 +13,9 @@ namespace GSMapp
         static void Main(string[] args)
         {
             
-            GsmConnect sms = new GsmConnect();
+            PortConnect sms = new PortConnect();
             GeneralCommands gc = new GeneralCommands();
-            
+            sms.AddReceiver(gc.GeneralHandler);
 
             
             sms.Connect();
