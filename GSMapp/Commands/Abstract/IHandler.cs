@@ -7,7 +7,7 @@ using GSMapp.Entities;
 
 namespace GSMapp.Commands.Abstract
 {
-    public interface ICommand
+    public interface IHandler
     {
         string Name { get; }
 

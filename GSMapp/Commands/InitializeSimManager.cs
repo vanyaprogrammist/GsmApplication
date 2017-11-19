@@ -14,16 +14,17 @@ namespace GSMapp.Commands
     public class InitializeSimManager
     {
         private PortConnect PortConnect { get; set; }
-        private List<ICommand> handlers;
-        private SerialDataReceivedEventHandler Receiver;
+        private List<IHandler> handlers;
+        public SerialDataReceivedEventHandler Receiver;
 
         public InitializeSimManager(PortConnect portConnect)
         {
             this.PortConnect = portConnect;
-            portConnect.AddReceiver(this.Receiver);
+            
+            handlers = new List<IHandler>();
         }
 
-        public void AddHandler(ICommand handler)
+        public void AddHandler(IHandler handler)
         {
             if (handlers.Any(h => h==handler))
             {
@@ -32,7 +33,7 @@ namespace GSMapp.Commands
             handlers.Add(handler);
         }
 
-        public void RemoveHandler(ICommand handler)
+        public void RemoveHandler(IHandler handler)
         {
             if (handlers.Any(h => h == handler))
             {
@@ -51,24 +52,25 @@ namespace GSMapp.Commands
 
             if (move)
             {
-                ICommand command = (ICommand) enumerator.Current;
-                foreach (string r in command.Request())
+                IHandler handler = (IHandler) enumerator.Current;
+                foreach (string r in handler.Request())
                 {
                     PortConnect.Write(r);
-                    Thread.Sleep(500);
                 }
 
                 Receiver = (sender, e) =>
                 {
                     SerialPort sp = (SerialPort) sender;
                     string indata = sp.ReadExisting();
-                    bool complete = command.Responce(indata);
+                    bool complete = handler.Responce(indata);
 
                     if (complete)
                     {
                         move = enumerator.MoveNext();
                     }
                 };
+
+                PortConnect.AddReceiver(Receiver);
             }
             else
             {
@@ -76,6 +78,9 @@ namespace GSMapp.Commands
             }
         }
 
-        
+        public void AddReceiver()
+        {
+            PortConnect.AddReceiver(Receiver);
+        }
     }
 }

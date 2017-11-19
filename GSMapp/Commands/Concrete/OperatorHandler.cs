@@ -8,20 +8,20 @@ using GSMapp.Entities;
 
 namespace GSMapp.Commands.Concrete
 {
-    public class OperatorCommand : ICommand
+    public class OperatorHandler : IHandler
     {
-        public string Name { get; } = "Operator_Command";
+        public string Name { get; } = "OperatorHandler";
 
         private SimCard card;
 
-        public OperatorCommand(SimCard card)
+        public OperatorHandler(SimCard card)
         {
             this.card = card;
         }
 
         public string[] Request()
         {
-            Console.WriteLine("Operators_request->");
+            Console.WriteLine(this.Name+" request->");
             string[] request = { "AT+COPS?"};
 
         return request;
@@ -29,7 +29,7 @@ namespace GSMapp.Commands.Concrete
 
         public bool Responce(string responce)
         {
-            Console.WriteLine("OperatorCommand_Responce:");        
+            Console.WriteLine(this.Name+" responce<-");        
             string handlString = Handler(responce);
                 if (handlString != null)
                 {
