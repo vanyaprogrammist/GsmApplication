@@ -10,7 +10,7 @@ namespace GSMapp.Commands.Concrete
 {
     public class Tele2Handler : IHandler
     {
-        public string Name { get; } = "Tele2Handler";
+        public string Name { get; }
 
         private SimCard card;
 
@@ -21,14 +21,14 @@ namespace GSMapp.Commands.Concrete
 
         public string[] Request()
         {
-            Console.WriteLine(card.Operator);
-            return null;
+            string[] request = {"AT"};
+            Console.WriteLine("Card_operator is: "+card.Operator);
+            return request;
         }
 
         public bool Responce(string responce)
         {
-
-            return true;
+            throw new NotImplementedException();
         }
     }
 }

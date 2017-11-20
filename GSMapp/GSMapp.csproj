@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Commands\Abstract\IHandler.cs" />
     <Compile Include="Commands\Concrete\OperatorHandler.cs" />
+    <Compile Include="Commands\Concrete\Tele2Handler.cs" />
     <Compile Include="Commands\Init.cs" />
     <Compile Include="Commands\InitializeSimManager.cs" />
     <Compile Include="Connectors\ComConnect.cs" />
