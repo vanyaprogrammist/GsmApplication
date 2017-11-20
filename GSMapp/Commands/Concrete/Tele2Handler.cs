@@ -10,7 +10,7 @@ namespace GSMapp.Commands.Concrete
 {
     public class Tele2Handler : IHandler
     {
-        public string Name { get; }
+        public string Name { get; } = nameof(Tele2Handler);
 
         private SimCard card;
 
@@ -19,16 +19,31 @@ namespace GSMapp.Commands.Concrete
             this.card = card;
         }
 
+        public bool Skip()
+        {
+            if (card.Operator.Equals(OperatorList.Tele2))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public string[] Request()
         {
-            string[] request = {"AT"};
-            Console.WriteLine("Card_operator is: "+card.Operator);
+            Console.WriteLine(this.Name+" request->");
+            string[] request = { "AT+COPS?" };
             return request;
         }
 
         public bool Responce(string responce)
         {
             throw new NotImplementedException();
+        }
+
+        private string Handler(string responce)
+        {
+            
         }
     }
 }

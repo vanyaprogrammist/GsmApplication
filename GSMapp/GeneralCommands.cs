@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -50,24 +51,25 @@ namespace GSMapp
 
         public void ReceiverTest()
         {
-            if (true)
-            {
+            
                 Receiver = (sender, args) =>
                 {
                     Console.WriteLine("GeneralCommands");
                     SerialPort sp = (SerialPort)sender;
                     string indata = sp.ReadExisting();
 
-                    string op = Operator(indata);
+                    //string op = Operator(indata);
 
                     Console.WriteLine("Data Received->");
                     Console.Write(indata);
                     Console.WriteLine("End of data received<-");
                 };
-            }
+            
            
         }
 
+        
+        //Handler
         public void GeneralHandler(object sender, SerialDataReceivedEventArgs e)
         {
             Console.WriteLine("GeneralCommands");

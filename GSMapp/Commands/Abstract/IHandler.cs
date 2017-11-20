@@ -11,6 +11,7 @@ namespace GSMapp.Commands.Abstract
     {
         string Name { get; }
 
+        bool Skip();
         string[] Request();
         bool Responce(string responce);
     }

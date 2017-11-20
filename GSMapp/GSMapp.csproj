@@ -53,6 +53,7 @@
     <Compile Include="GeneralCommands.cs" />
     <Compile Include="Entities\Com.cs" />
     <Compile Include="Connectors\PortConnect.cs" />
+    <Compile Include="Hellpers\Сrypto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

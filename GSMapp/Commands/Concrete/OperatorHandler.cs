@@ -10,13 +10,18 @@ namespace GSMapp.Commands.Concrete
 {
     public class OperatorHandler : IHandler
     {
-        public string Name { get; } = "OperatorHandler";
+        public string Name { get; } = nameof(OperatorHandler);
 
         private SimCard card;
 
         public OperatorHandler(SimCard card)
         {
             this.card = card;
+        }
+
+        public bool Skip()
+        {
+            return false;
         }
 
         public string[] Request()
@@ -46,6 +51,8 @@ namespace GSMapp.Commands.Concrete
             
             
         }
+
+        
 
         private string Handler(string responce)
         {

@@ -63,6 +63,10 @@ namespace GSMapp.Commands
             if (move)
             {
                 IHandler handler = (IHandler) enumerator.Current;
+                if (handler.Skip())
+                {
+                    Command();
+                }
                 foreach (string r in handler.Request())
                 {
                     PortConnect.Write(r);

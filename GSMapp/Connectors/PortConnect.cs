@@ -189,7 +189,7 @@ namespace GSMapp.Connectors
 
             _port.WriteLine("AT^USSDMODE=0");
             Thread.Sleep(500);
-            _port.WriteLine("AT+CUSD=1,\"*110*10#\",15");
+            _port.WriteLine("AT+CUSD=1,\"*201#\",15");
             Thread.Sleep(500);
 
             string responce = _port.ReadExisting();
