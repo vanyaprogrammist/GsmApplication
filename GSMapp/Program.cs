@@ -21,10 +21,10 @@ namespace GSMapp
             SimCard card = new SimCard();
             GeneralCommands gc = new GeneralCommands();
 
-            string result = 
-                "04230441043B0443043304300020043D04350434043E044104420443043F043D04300020043D043000200412043004480435043C002004420430044004380444043D043E043C0020043F043B0430043D0435002E".UnicodeStrToUcs2Str();
-            Console.WriteLine(result);
-            /*gc.ReceiverTest();
+            
+            
+
+            gc.ReceiverTest();
             sms.AddReceiver(gc.Receiver);
             
 

@@ -43,7 +43,7 @@ namespace GSMapp.Commands.Concrete
 
         private string Handler(string responce)
         {
-            
+            return null;
         }
     }
 }

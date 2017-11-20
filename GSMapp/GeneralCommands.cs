@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GSMapp.Entities;
+using GSMapp.Hellpers;
 
 namespace GSMapp
 {
@@ -49,6 +50,19 @@ namespace GSMapp
             
         }
 
+        private string MessageOfNumber(string message)
+        {
+            int startIndex = message.IndexOf("\"", StringComparison.Ordinal)+1;
+            int lastIndex = message.LastIndexOf("\"", StringComparison.Ordinal) - startIndex;
+            if (message.Contains("+CUSD:"))
+            {
+                message = message.Substring(startIndex, lastIndex);
+                string result = message.Ucs2StrToUnicodeStr();
+                return result;
+            }
+            return null;
+        }
+
         public void ReceiverTest()
         {
             
@@ -57,8 +71,13 @@ namespace GSMapp
                     Console.WriteLine("GeneralCommands");
                     SerialPort sp = (SerialPort)sender;
                     string indata = sp.ReadExisting();
-
-                    //string op = Operator(indata);
+                    string message = MessageOfNumber(indata);
+                    if (message != null)
+                    {
+                        Console.WriteLine("This is my message");
+                        Console.WriteLine(message);
+                    }
+                    
 
                     Console.WriteLine("Data Received->");
                     Console.Write(indata);
