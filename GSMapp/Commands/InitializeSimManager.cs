@@ -15,12 +15,13 @@ namespace GSMapp.Commands
     {
         private PortConnect PortConnect { get; set; }
         private List<IHandler> handlers;
+        private IEnumerator enumerator;
+
         public SerialDataReceivedEventHandler Receiver;
 
         public InitializeSimManager(PortConnect portConnect)
         {
             this.PortConnect = portConnect;
-            
             handlers = new List<IHandler>();
         }
 
@@ -45,11 +46,20 @@ namespace GSMapp.Commands
             }
         }
 
-        public void ProcessNewCard()
+        public void StartManager()
         {
-            IEnumerator enumerator = handlers.GetEnumerator();
-            bool move = enumerator.MoveNext();
+            enumerator = handlers.GetEnumerator();
+            Command();
+            PortConnect.AddReceiver(Receiver);
+        }
 
+        private void Command()
+        {
+            bool move = enumerator.MoveNext();
+            if (this.handlers.Count == 0)
+            {
+                move = false;
+            }
             if (move)
             {
                 IHandler handler = (IHandler) enumerator.Current;
@@ -57,20 +67,7 @@ namespace GSMapp.Commands
                 {
                     PortConnect.Write(r);
                 }
-
-                Receiver = (sender, e) =>
-                {
-                    SerialPort sp = (SerialPort) sender;
-                    string indata = sp.ReadExisting();
-                    bool complete = handler.Responce(indata);
-
-                    if (complete)
-                    {
-                        move = enumerator.MoveNext();
-                    }
-                };
-
-                PortConnect.AddReceiver(Receiver);
+                Feedback(handler);
             }
             else
             {
@@ -78,9 +75,21 @@ namespace GSMapp.Commands
             }
         }
 
-        public void AddReceiver()
+        private void Feedback(IHandler handler)
         {
-            PortConnect.AddReceiver(Receiver);
+            Receiver = (sender, args) =>
+            {
+                SerialPort sp = (SerialPort)sender;
+                string indata = sp.ReadExisting();
+                bool complete = handler.Responce(indata);
+
+                if (complete)
+                {
+                   Command();
+                }
+            };
         }
+
+        
     }
 }

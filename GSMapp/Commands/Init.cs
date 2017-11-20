@@ -86,8 +86,8 @@ namespace GSMapp.Commands
             InitializeSimManager manager = CreateSimManager();
 
             
-            manager.ProcessNewCard();
-            //manager.AddReceiver();
+            manager.StartManager();
+            
         }
     }
 }

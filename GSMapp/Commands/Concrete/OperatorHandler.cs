@@ -29,19 +29,22 @@ namespace GSMapp.Commands.Concrete
 
         public bool Responce(string responce)
         {
-            Console.WriteLine(this.Name+" responce<-");        
-            string handlString = Handler(responce);
+            Console.WriteLine(this.Name+" responce<-");
+           
+                string handlString = Handler(responce);
                 if (handlString != null)
                 {
                     Console.WriteLine("Operator обработан");
                     bool success = SaveModel(handlString);
 
-                        if (success)
-                            return true;
-                        else
-                            Console.WriteLine("Не получилось сохранить operator");
+                    if (success)
+                        return true;
+                    else
+                        Console.WriteLine("Не получилось сохранить operator");
                 }
-            return false;
+                return false;
+            
+            
         }
 
         private string Handler(string responce)
