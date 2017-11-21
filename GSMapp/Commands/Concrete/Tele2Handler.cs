@@ -33,7 +33,7 @@ namespace GSMapp.Commands.Concrete
         public string[] Request()
         {
             Console.WriteLine(this.Name+" request->");
-            string[] request = { "AT+COPS?" };
+            string[] request = { "AT^USSDMODE=0", "AT+CUSD=1,\"*201#\",15"};
             return request;
         }
 

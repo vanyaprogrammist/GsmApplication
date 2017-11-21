@@ -121,6 +121,11 @@ namespace GSMapp.Connectors
             }
         }
 
+        public void DeleteAllReceiver()
+        {
+            
+        }
+
         public void Write(string command)
         {
             if (IsConnected)

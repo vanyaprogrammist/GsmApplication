@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GSMapp.Connectors;
 using GSMapp.Entities;
 using GSMapp.Hellpers;
 
@@ -16,9 +17,11 @@ namespace GSMapp
 
         public SerialDataReceivedEventHandler Receiver;
 
-        public GeneralCommands()
+        public PortConnect port;
+
+        public GeneralCommands(PortConnect port)
         {
-            
+            this.port = port;
         }
 
         public string Operator(string sender)
@@ -75,12 +78,22 @@ namespace GSMapp
             return null;
         }
 
-        public void ReceiverTest()
+        private int z = 5;
+
+        public void DeleteReceiver()
         {
-            
+            port.RemoveReceiver(Receiver);
+        }
+
+        public void ReceiverTest(string g)
+        {
+            z++;
                 Receiver = (sender, args) =>
                 {
                     Console.WriteLine("GeneralCommands");
+                    Console.WriteLine(z);
+                    g += "collab";
+                    Console.WriteLine(g);
                     SerialPort sp = (SerialPort)sender;
                     string indata = sp.ReadExisting();
                     string message = MessageOfNumber(indata);

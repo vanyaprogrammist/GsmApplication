@@ -19,27 +19,38 @@ namespace GSMapp
             
             PortConnect sms = new PortConnect();
             SimCard card = new SimCard();
-            /*GeneralCommands gc = new GeneralCommands();
+            GeneralCommands gc = new GeneralCommands(sms);
 
-            
-            
 
-            gc.ReceiverTest();
-            sms.AddReceiver(gc.Receiver);*/
-            
+
+
+             /*gc.ReceiverTest(" test ");
+             gc.port.AddReceiver(gc.Receiver);
+
+
+
+             sms.Connect();
+             Console.WriteLine(sms.IsConnected);
+
+             if (sms.IsConnected)
+             {
+                 sms.Number();
+                //gc.port.RemoveReceiver(gc.Receiver);
+                gc.DeleteReceiver();
+                 sms.Operator();
+             }*/
+
+             
+
+
 
 
             sms.Connect();
-
-            Console.WriteLine(sms.IsConnected);
-            
-            
-            
-            Init.PortConnect = sms;
+              Init.PortConnect = sms;
             Init.SimCard = card;
             Init.Excecute();
-
             
+
             Console.ReadLine();
 
         }

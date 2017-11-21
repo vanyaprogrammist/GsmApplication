@@ -18,6 +18,7 @@ namespace GSMapp.Commands
         private IEnumerator enumerator;
 
         public SerialDataReceivedEventHandler Receiver;
+        
 
         public InitializeSimManager(PortConnect portConnect)
         {
@@ -51,8 +52,10 @@ namespace GSMapp.Commands
             enumerator = handlers.GetEnumerator();
             Command();
 
-            PortConnect.AddReceiver(Receiver);
+            
         }
+
+        
 
         private void Command()
         {
@@ -65,15 +68,22 @@ namespace GSMapp.Commands
             if (move)
             {
                 IHandler handler = (IHandler) enumerator.Current;
+                
                 if (handler.Skip())
                 {
                     Command();
                 }
+
+                Receiver = null;
+                Feedback(handler);
+                PortConnect.AddReceiver(Receiver);
+                Console.WriteLine("Добавил recceiver: "+Receiver.GetHashCode());
+                
                 foreach (string r in handler.Request())
                 {
                     PortConnect.Write(r);
                 }
-                Feedback(handler);
+                
             }
             else
             {
@@ -81,31 +91,31 @@ namespace GSMapp.Commands
             }
         }
 
-     private int counter = 0;
+     
 
         private void Feedback(IHandler handler)
         {
             Console.WriteLine("FEEDBACK");
-            if (counter != 0)
-            {
-                Console.WriteLine("Remove Receiver");
-                PortConnect.RemoveReceiver(Receiver);
-            }
+           
             Receiver = (sender, args) =>
             {
+                
                 Console.WriteLine("Receiver --- Handler name: "+handler.Name);
                 SerialPort sp = (SerialPort)sender;
                 string indata = sp.ReadExisting();
+                Console.WriteLine($"Indata({handler.Name}): "+indata+"<-end");
                 bool complete = handler.Responce(indata);
 
                 if (complete)
                 {
+                   PortConnect.RemoveReceiver(Receiver);
+                    Console.WriteLine("Убрал receiver: "+Receiver.GetHashCode());
                    Command();
                 }
             };
             
                 
-                counter++;
+               
             
            
         }
