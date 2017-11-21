@@ -49,7 +49,6 @@ namespace GSMapp.Commands.Concrete
                 }
                 return false;
             
-            
         }
 
         

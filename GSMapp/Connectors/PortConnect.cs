@@ -108,6 +108,19 @@ namespace GSMapp.Connectors
             
         }
 
+        public void UpdateReceiver(SerialDataReceivedEventHandler receiver)
+        {
+            if (Receivers.Any(r => r == receiver))
+            {
+                _port.DataReceived -= receiver;
+                Receivers.Remove(receiver);
+            }
+            else
+            {
+                Receivers.Add(receiver);
+            }
+        }
+
         public void Write(string command)
         {
             if (IsConnected)

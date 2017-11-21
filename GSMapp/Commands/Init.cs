@@ -78,6 +78,7 @@ namespace GSMapp.Commands
 
                 manager.AddHandler(new OperatorHandler(SimCard));
                 manager.AddHandler(new Tele2Handler(SimCard));
+                
 
             return manager;
         }

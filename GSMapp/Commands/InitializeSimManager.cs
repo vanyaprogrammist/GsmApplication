@@ -50,11 +50,13 @@ namespace GSMapp.Commands
         {
             enumerator = handlers.GetEnumerator();
             Command();
+
             PortConnect.AddReceiver(Receiver);
         }
 
         private void Command()
         {
+            
             bool move = enumerator.MoveNext();
             if (this.handlers.Count == 0)
             {
@@ -79,10 +81,19 @@ namespace GSMapp.Commands
             }
         }
 
+     private int counter = 0;
+
         private void Feedback(IHandler handler)
         {
+            Console.WriteLine("FEEDBACK");
+            if (counter != 0)
+            {
+                Console.WriteLine("Remove Receiver");
+                PortConnect.RemoveReceiver(Receiver);
+            }
             Receiver = (sender, args) =>
             {
+                Console.WriteLine("Receiver --- Handler name: "+handler.Name);
                 SerialPort sp = (SerialPort)sender;
                 string indata = sp.ReadExisting();
                 bool complete = handler.Responce(indata);
@@ -92,6 +103,11 @@ namespace GSMapp.Commands
                    Command();
                 }
             };
+            
+                
+                counter++;
+            
+           
         }
 
         

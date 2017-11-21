@@ -63,6 +63,18 @@ namespace GSMapp
             return null;
         }
 
+        private string OnlyNumber(string message)
+        {
+            int startIndex = message.IndexOf("+", StringComparison.Ordinal);
+            int lastIndex = message.Length - startIndex;
+            if (message.Contains("Ваш федеральный номер"))
+            {
+                message = message.Substring(startIndex, lastIndex);
+                return message;
+            }
+            return null;
+        }
+
         public void ReceiverTest()
         {
             
@@ -76,6 +88,12 @@ namespace GSMapp
                     {
                         Console.WriteLine("This is my message");
                         Console.WriteLine(message);
+                        string number = OnlyNumber(message);
+                        if (number != null)
+                        {
+                            Console.WriteLine("Only number: ");
+                            Console.WriteLine(number);
+                        }
                     }
                     
 
