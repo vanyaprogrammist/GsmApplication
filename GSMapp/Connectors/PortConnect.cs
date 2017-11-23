@@ -9,7 +9,7 @@ using System.Net.Configuration;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GSMapp.Entities;
+using GSMapp.Models;
 
 namespace GSMapp.Connectors
 {
@@ -19,7 +19,7 @@ namespace GSMapp.Connectors
         private ComConnect ComConnect { get; set; }
 
         public bool IsConnected { get; set; } = false;
-        
+        public Com ComPort { get; private set; }
 
         private List<SerialDataReceivedEventHandler> Receivers { get; set; }
 
@@ -28,6 +28,7 @@ namespace GSMapp.Connectors
             _port = new SerialPort();
             Receivers = new List<SerialDataReceivedEventHandler>();
             ComConnect = new ComConnect();
+            ComPort = new Com();
         }
 
         public bool Connect()
@@ -55,13 +56,15 @@ namespace GSMapp.Connectors
                         _port.Encoding = Encoding.GetEncoding("windows-1251");
 
                         _port.Open();
-                        
+
+                        this.ComPort.Name = com.Name;
+                        this.ComPort.Description = com.Description;
                         
                         IsConnected = true;
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.Message+" tut");
                         IsConnected = false;
                     }
                 }

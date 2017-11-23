@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GSMapp.Entities;
 
 namespace GSMapp.Commands.Abstract
 {
@@ -14,5 +13,6 @@ namespace GSMapp.Commands.Abstract
         bool Skip();
         string[] Request();
         bool Responce(string responce);
+        bool Action();
     }
 }

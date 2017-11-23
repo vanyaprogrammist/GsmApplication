@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using GSMapp.Commands.Concrete;
 using GSMapp.Connectors;
-using GSMapp.Entities;
+using GSMapp.DataBase.Abstract;
+using GSMapp.Models;
 
 namespace GSMapp.Commands
 {
@@ -13,6 +14,7 @@ namespace GSMapp.Commands
     {
         private static PortConnect portConnect = null;
         private static SimCard simCard = null;
+        private static ICardRepository repository = null;
 
         public static PortConnect PortConnect
         {
@@ -67,9 +69,36 @@ namespace GSMapp.Commands
                 }
             }
         }
-        
 
-        
+        public static ICardRepository Repository
+        {
+            get
+            {
+                if (repository != null)
+                {
+                    return repository;
+                }
+                else
+                {
+                    throw new Exception("Repository не задано");
+                }
+            }
+
+            set
+            {
+                if (value != null)
+                {
+                    repository = value;
+                }
+                else
+                {
+                    throw new Exception("Нельзя задавать Repository = null");
+                }
+            }
+        }
+
+
+
 
         private static InitializeSimManager CreateSimManager()
         {
@@ -78,7 +107,7 @@ namespace GSMapp.Commands
 
                 manager.AddHandler(new OperatorHandler(SimCard));
                 manager.AddHandler(new Tele2Handler(SimCard));
-                
+                manager.AddHandler(new SaveCardHandler(SimCard,PortConnect.ComPort,Repository));
 
             return manager;
         }

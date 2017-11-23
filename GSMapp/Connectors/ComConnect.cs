@@ -5,7 +5,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Threading.Tasks;
-using GSMapp.Entities;
+using GSMapp.Models;
 
 namespace GSMapp.Connectors
 {

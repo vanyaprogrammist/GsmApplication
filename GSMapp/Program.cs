@@ -6,8 +6,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using GSMapp.Commands;
 using GSMapp.Connectors;
-using GSMapp.Entities;
+using GSMapp.DataBase.Concrete;
 using GSMapp.Hellpers;
+using GSMapp.Models;
+using Com = GSMapp.DataBase.Entities.Com;
+using SimCard = GSMapp.DataBase.Entities.SimCard;
 
 
 namespace GSMapp
@@ -18,10 +21,11 @@ namespace GSMapp
         {
             
             PortConnect sms = new PortConnect();
-            SimCard card = new SimCard();
-            GeneralCommands gc = new GeneralCommands(sms);
+            GSMapp.Models.SimCard card = new GSMapp.Models.SimCard();
+            
 
-
+            CardRep rep = new CardRep();
+           
 
 
              /*gc.ReceiverTest(" test ");
@@ -44,10 +48,12 @@ namespace GSMapp
 
 
 
-
+            
             sms.Connect();
-              Init.PortConnect = sms;
+
+            Init.PortConnect = sms;
             Init.SimCard = card;
+            Init.Repository = rep;
             Init.Excecute();
             
 

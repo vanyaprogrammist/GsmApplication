@@ -5,3 +5,9 @@ C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.csprojResolveAssemblyReference.cach
 C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.csproj.CoreCompileInputs.cache
 C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.exe
 C:\VsProjects\GSMapp\GSMapp\obj\Debug\GSMapp.pdb
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\EntityFramework.dll
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\EntityFramework.SqlServer.dll
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\MySql.Data.dll
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\MySql.Data.Entity.EF6.dll
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\EntityFramework.xml
+C:\VsProjects\GSMapp\GSMapp\bin\Debug\EntityFramework.SqlServer.xml

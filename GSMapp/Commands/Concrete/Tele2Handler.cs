@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GSMapp.Commands.Abstract;
-using GSMapp.Entities;
 using GSMapp.Hellpers;
+using GSMapp.Models;
 
 namespace GSMapp.Commands.Concrete
 {
@@ -55,6 +55,11 @@ namespace GSMapp.Commands.Concrete
                     Console.WriteLine("Не получилось сохранить Tele2_Number");
             }
 
+            return false;
+        }
+
+        public bool Action()
+        {
             return false;
         }
 

@@ -74,15 +74,25 @@ namespace GSMapp.Commands
                     Command();
                 }
 
+                if (handler.Action())
+                {
+                    Command();
+                }
+                
+
                 Receiver = null;
                 Feedback(handler);
                 PortConnect.AddReceiver(Receiver);
                 Console.WriteLine("Добавил recceiver: "+Receiver.GetHashCode());
-                
-                foreach (string r in handler.Request())
+
+                if (handler.Request() != null)
                 {
-                    PortConnect.Write(r);
+                    foreach (string r in handler.Request())
+                    {
+                        PortConnect.Write(r);
+                    }
                 }
+                
                 
             }
             else

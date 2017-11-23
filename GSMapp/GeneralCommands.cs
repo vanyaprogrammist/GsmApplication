@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GSMapp.Connectors;
-using GSMapp.Entities;
 using GSMapp.Hellpers;
+using GSMapp.Models;
 
 namespace GSMapp
 {

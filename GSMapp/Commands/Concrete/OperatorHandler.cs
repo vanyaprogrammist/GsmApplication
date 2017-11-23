@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GSMapp.Commands.Abstract;
-using GSMapp.Entities;
+using GSMapp.Models;
 
 namespace GSMapp.Commands.Concrete
 {
@@ -51,7 +51,11 @@ namespace GSMapp.Commands.Concrete
             
         }
 
-        
+        public bool Action()
+        {
+            return false;
+        }
+
 
         private string Handler(string responce)
         {
